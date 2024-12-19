@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 10px;
+            margin: 0;
+        }
+        h2 {
+            margin: 20px 0;
+        }
+        .button {
+            background-color: green;
+            color: #fff;
+            padding: 15px 30px;
+            border: none;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            animation: pulse 1s infinite;
+            text-transform: uppercase;
+            margin: 20px 0;
+        }
+        .button:hover {
+            background-color: #28a745;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .countdown {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .countdown .count {
+            color: #FF0000;
+        }
+        .disclaimer {
+            font-size: 10px;
+            color: #888888;
+            text-align: center;
+            line-height: 1.0;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #111;
+            padding: 10px 10px;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <h2>Confirm Your Age To Watch:</h2>
+
+    <!-- Botão com parâmetros dinâmicos -->
+    <button class="button" id="dynamic-button">I'M OVER 21+</button>
+
+    <p class="countdown">Only <span class="count" id="spot-count">10</span> spots left to watch for free!</p>
+
+    <!-- Disclaimer -->
+    <div class="disclaimer">
+        This site is not affiliated with TikTok or TikTok Inc. Additionally, this site is not endorsed by TikTok in any way. TIKTOK is a registered trademark of TikTok Inc.<br><br>
+        TikTok provides a platform for advertising, but the opinions and/or views expressed on this site do not reflect the official position of TikTok Inc.<br><br>
+        The opinions and/or views expressed on the social media platforms of our site, including, but not limited to, our blogs and TikTok pages, represent the thoughts of individual bloggers and online communities, and not necessarily those of our site or any of its business partners, affiliates, or members of its management. The views and opinions expressed on these pages do not reflect the views of the site on which they are published, other sites affiliated with the site, the staff involved in maintaining the site, or any member of the site.<br><br>
+        Any opinions or views expressed on the social media platforms of this site are not representative of TikTok Inc.
+    </div>
+
+    <script>
+        // Extrair parâmetros da URL
+        function getQueryParams() {
+            const query = window.location.search.substring(1);
+            const params = {};
+            query.split('&').forEach(param => {
+                const [key, value] = param.split('=');
+                params[key] = decodeURIComponent(value || '');
+            });
+            return params;
+        }
+
+        // Construir URL com parâmetros dinâmicos
+        function buildDynamicLink() {
+            const params = getQueryParams();
+            const baseLink = "https://page.strongmenhealth.site/";
+            const queryString = new URLSearchParams(params).toString();
+            return `${baseLink}?${queryString}`;
+        }
+
+        // Atualizar botão dinamicamente
+        const dynamicButton = document.getElementById('dynamic-button');
+        dynamicButton.addEventListener('click', () => {
+            const dynamicLink = buildDynamicLink();
+            window.location.href = dynamicLink;
+        });
+
+        // Atualizar contagem de spots
+        let count = 10;
+
+        function decreaseCount() {
+            if (count > 3) {
+                let decrement = Math.floor(Math.random() * 2) + 1;
+                count -= decrement;
+                if (count < 3) count = 3;
+                document.getElementById('spot-count').textContent = count;
+
+                let nextTimeout = Math.floor(Math.random() * 1000) + 2000;
+                setTimeout(decreaseCount, nextTimeout);
+
+            } else if (count === 3) {
+                setTimeout(() => {
+                    count--;
+                    document.getElementById('spot-count').textContent = count;
+                }, 30000);
+            }
+        }
+
+        setTimeout(() => {
+            count = 9;
+            document.getElementById('spot-count').textContent = count;
+            setTimeout(decreaseCount, 2000);
+        }, 1000);
+    </script>
+</body>
+</html>
